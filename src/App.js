@@ -13,7 +13,9 @@ function PrivateRoute({ children, allowedRole }) {
   if (allowedRole && role !== allowedRole) return <Navigate to="/" replace />;
   return children;
 }
-
+const basename = window.location.hostname.includes("github.io") 
+    ? "/hostel-management" 
+    : "";
 function AppRoutes() {
   return (
     <Routes>
@@ -50,7 +52,7 @@ function AppRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename={basename}>
         <AppRoutes />
       </Router>
     </AuthProvider>

@@ -16,10 +16,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     
-    # This tells the runner to execute all 'run' commands inside the client folder
-    defaults:
-      run:
-        working-directory: ./client
+    # REMOVED the defaults/working-directory section because files are in root
 
     steps:
       - name: Checkout code
@@ -34,13 +31,14 @@ jobs:
         run: npm install
 
       - name: Build
+        # CI=false prevents ESLint warnings from breaking the build
         run: CI=false npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # This path is relative to the root of the repo, not the working-directory
-          path: './client/build'
+          # Changed from './client/build' to './build'
+          path: './build'
 
       - name: Deploy to GitHub Pages
         id: deployment

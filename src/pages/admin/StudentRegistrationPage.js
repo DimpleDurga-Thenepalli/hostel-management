@@ -32,7 +32,7 @@ function StudentRegistrationPage() {
 
   useEffect(() => {
     loadRooms(form.block, form.subBlock);
-  }, []);
+  }, [form.block, form.subBlock]);
 
   const handleChange = (field, value) => {
     setForm((f) => ({ ...f, [field]: value }));

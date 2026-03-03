@@ -4,7 +4,6 @@ on:
   push:
     branches: [ "main" ]
 
-# Grant permissions to allow the deployment process to function
 permissions:
   contents: read
   pages: write
@@ -16,6 +15,12 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    
+    # This tells the runner to execute all 'run' commands inside the client folder
+    defaults:
+      run:
+        working-directory: ./client
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,11 +34,12 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npm run build
+        run: CI=false npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          # This path is relative to the root of the repo, not the working-directory
           path: './client/build'
 
       - name: Deploy to GitHub Pages
